@@ -27,7 +27,7 @@ notesRouter
       }
     }
     
-    NotesService.insertFolder(
+    NotesService.insertNote(
       req.app.get('db'),
       newNote
     )
@@ -43,9 +43,10 @@ notesRouter
 notesRouter
   .route('/:note_id')
   .all((req, res, next) => {
+    const { note_id } = req.params
     NotesService.getById(
       req.app.get('db'),
-      req.params.id
+      note_id
     )
       .then(note => {
         if (!note) {
@@ -72,9 +73,10 @@ notesRouter
       .catch(next)
   })
   .delete((req, res, next) => {
-    FoldersService.deleteNote(
+    const { note_id } = req.params
+    NotesService.deleteNote(
       req.app.get('db'),
-      req.params.id
+      note_id
     )
       .then(() => {
         res.status(204).end()
